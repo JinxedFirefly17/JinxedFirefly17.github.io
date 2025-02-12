@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f2;
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            color: #d63384;
+            z-index: 10;
+        }
+        .buttons {
+            margin-top: 20px;
+            z-index: 10;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .yes {
+            background-color: #32CD32;
+            color: white;
+        }
+        .no {
+            background-color: #FF0000;
+            color: white;
+        }
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: red;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            from { transform: translateY(0vh); opacity: 1; }
+            to { transform: translateY(100vh); opacity: 0; }
+        }
+        .message {
+            display: none;
+            font-size: 24px;
+            color: #d63384;
+            margin-top: 20px;
+            z-index: 10;
+        }
+    </style>
+    <script>
+        function sendResponse(response) {
+            fetch("https://discord.com/api/webhooks/1339056839639302187/RpIdRCgUzUwmL98zgdMwMtNkcokr5LAxHTpeE6loU-gnRUdVRVkC1gRJE-PsSxpVsOCx", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: response })
+            });
+
+            // Hide buttons
+            document.querySelector('.buttons').style.display = 'none';
+
+            // Display the appropriate message based on the response
+            const message = response === 'They clicked yes' 
+                ? 'YAY ats wha i was hopin!!<33' 
+                : 'No - why na :<';
+            
+            const messageElement = document.querySelector('.message');
+            messageElement.innerText = message;
+            messageElement.style.display = 'block';
+        }
+        
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "💕";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "-5vh";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        
+        setInterval(createHeart, 200);
+    </script>
+</head>
+<body>
+    <h1>WILL YOU BE MY VALENTINE?</h1>
+    <div class="buttons">
+        <button class="yes" onclick="sendResponse('They clicked yes')">YES</button>
+        <button class="no" onclick="sendResponse('They clicked no')">NO</button>
+    </div>
+    <div class="message"></div>
+</body>
+</html>
